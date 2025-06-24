@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Ana Sayfa - Pisi GNU/Linux Gönüllü{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Sol Sidebar -->
+    <div class="col-md-3">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-list"></i> Hızlı Menü
+                </h5>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="bi bi-speedometer2"></i> Gösterge Paneli
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="bi bi-people"></i> Gönüllüler
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="bi bi-gear"></i> Ayarlar
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ana İçerik -->
+    <div class="col-md-9">
+        <div class="row">
+            <!-- İstatistik Kartları -->
+            <div class="col-md-4 mb-4">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="bi bi-people"></i> Toplam Gönüllü
+                        </h5>
+                        <h2 class="card-text">150</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="bi bi-check-circle"></i> Aktif Görevler
+                        </h5>
+                        <h2 class="card-text">25</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card bg-info text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="bi bi-clock"></i> Tamamlanan
+                        </h5>
+                        <h2 class="card-text">75</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Son Aktiviteler -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-activity"></i> Son Aktiviteler
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">Yeni gönüllü katıldı</h6>
+                            <small>3 saat önce</small>
+                        </div>
+                        <p class="mb-1">Ahmet Yılmaz sisteme katıldı.</p>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">Görev tamamlandı</h6>
+                            <small>5 saat önce</small>
+                        </div>
+                        <p class="mb-1">Paket güncelleme görevi tamamlandı.</p>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">Yeni görev oluşturuldu</h6>
+                            <small>1 gün önce</small>
+                        </div>
+                        <p class="mb-1">Yeni paket test görevi oluşturuldu.</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
