@@ -9,7 +9,8 @@ __pycache__/
 env/
 
 # Backup klasörü
-bck/
+bck2/
+yedek_gtk/
 
 # IDE ve sistem dosyaları
 .vscode/
