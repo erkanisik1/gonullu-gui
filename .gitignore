@@ -20,3 +20,5 @@ Thumbs.db
 
 # Log dosyaları
 *.log 
+
+remember_me.json
