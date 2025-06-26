@@ -4,11 +4,14 @@ import requests
 import json
 import hashlib
 import os
-from config import API_URL, REMEMBER_FILE
+from config import API_URL, REMEMBER_FILE, logo_path
+import ttkbootstrap as tb
 
 class LoginWindow:
     def __init__(self, on_login_success):
-        self.root = tk.Tk()
+        self.root = tb.Window(themename="flatly")
+        self.logo_img = tk.PhotoImage(file=logo_path)  # root oluşturulduktan sonra!
+        self.root.iconphoto(True, self.logo_img)
         self.root.title("Gönüllü - Giriş")
         self.root.geometry("400x300")
         self.root.resizable(False, False)
@@ -249,13 +252,18 @@ class LoginWindow:
     
     def open_main_window(self):
         """Ana pencereyi aç"""
-        self.root.destroy()
+        self.root.withdraw()
         if self.on_login_success:
-            self.on_login_success()
+            self.on_login_success(self.root)
     
     def on_closing(self):
         """Pencere kapatıldığında"""
-        self.root.quit()
+        try:
+            if hasattr(self, 'after_id'):
+                self.root.after_cancel(self.after_id)
+            self.root.destroy()
+        except Exception as e:
+            print("Kapanışta hata:", e)
     
     def show(self):
         """Pencereyi göster"""

@@ -10,10 +10,10 @@ class App:
         self.login_win = LoginWindow(self.on_login_success)
         self.main_win = None
     
-    def on_login_success(self):
+    def on_login_success(self, master_root):
         """Login başarılı olduğunda ana pencereyi aç"""
-      
-        self.main_win = MainWindow()
+        print("Login başarılı, ana pencere açılıyor...")
+        self.main_win = MainWindow(master_root)
         self.main_win.show()
     
     def run(self):

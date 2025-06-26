@@ -1,11 +1,15 @@
+import os
 import tkinter as tk
 from tkinter import ttk, messagebox
 import requests
-from config import API_URL
+from config import API_URL, logo_path
+import ttkbootstrap as tb
 
 class MainWindow:
-    def __init__(self):
-        self.root = tk.Tk()
+    def __init__(self, master):
+        self.root = tb.Toplevel(master)
+        self.logo_img = tk.PhotoImage(file=logo_path)  # root oluşturulduktan sonra!
+        self.root.iconphoto(True, self.logo_img)
         self.root.title("Gönüllü - Ana Pencere")
         self.root.geometry("500x400")
         self.root.resizable(True, True)
@@ -90,7 +94,7 @@ class MainWindow:
                                           relief="flat", borderwidth=0,
                                           activebackground="#2E86AB", activeforeground="white",
                                           width=20, height=2)
-        self.select_pkg_button.grid(row=2, column=0, columnspan=2, pady=10)
+        self.select_pkg_button.grid(row=2, column=0, columnspan=2, pady=10, sticky="ew")
         self.select_pkg_button.config(state='disabled')  # Başlangıçta devre dışı
         
         # Durum etiketi
@@ -99,6 +103,12 @@ class MainWindow:
         
         # Paket verilerini sakla
         self.packages = []
+        
+        # Otomatik boyutlandırma
+        self.root.update_idletasks()
+        self.root.geometry("")
+        
+      
         
     def center_window(self):
         """Pencereyi ekranın ortasına yerleştir"""
@@ -242,7 +252,12 @@ class MainWindow:
     
     def on_closing(self):
         """Pencere kapatıldığında"""
-        self.root.destroy()
+        try:
+            if hasattr(self, 'after_id'):
+                self.root.after_cancel(self.after_id)
+            self.root.destroy()
+        except Exception as e:
+            print("Kapanışta hata:", e)
     
     def show(self):
         """Pencereyi göster"""
