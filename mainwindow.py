@@ -4,7 +4,9 @@ from tkinter import ttk, messagebox
 import requests
 from config import API_URL, logo_path
 import ttkbootstrap as tb
-
+import json
+from volunteer import Volunteer
+import sys
 class MainWindow:
     def __init__(self, master):
         self.root = tb.Toplevel(master)
@@ -137,10 +139,55 @@ class MainWindow:
         # Scrollbar stili
         style.configure("Vertical.TScrollbar", background="#ffffff")
     
+    def get_email_from_remember_file(self):
+        try:
+            with open(".remember_me.json", "r") as f:
+                data = json.load(f)
+                return data.get("mail", "")
+        except Exception:
+            return ""
+
     def on_auto_clicked(self):
-        """Otomatik paket alma butonuna tıklandığında"""
         self.clear_package_list()
-        messagebox.showinfo("Bilgi", "Otomatik paket alma başlatılacak!")
+        self.status_label.config(text="Otomatik paket alınıyor...", foreground="blue")
+        self.auto_button.config(state='disabled')
+        self.select_button.config(state='disabled')
+        self.root.after(100, self.auto_get_and_build)
+
+    def auto_get_and_build(self):
+        try:
+            response = requests.get(API_URL + 'onepackage', timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                package = data.get('package', [])
+                if not package:
+                    self.status_label.config(text="Otomatik alınacak paket yok.", foreground="orange")
+                else:
+                    first_pkg = package[0]
+                    if not "package" in first_pkg:
+                        # "paket_adi" veya "paket_id" hangisi varsa onu kullan
+                        first_pkg["package"] = first_pkg.get("paket_adi") or first_pkg.get("paket_id")
+
+                    self.status_label.config(text=f"{first_pkg.get('paket_adi', 'Bilinmiyor')} derleniyor...", foreground="green")
+                    # Volunteer ile derleme başlat
+                    class Params:
+                        def __init__(self, email):
+                            self.job = 5  # veya uygun değer
+                            self.memory_limit = 50  # örnek
+                            self.cpu_set = 1  # örnek
+                            self.email = email
+                    email = self.get_email_from_remember_file()
+                    params = Params(email)
+                    v = Volunteer(params)
+                    v.get_package_farm(first_pkg)
+                    self.status_label.config(text=f"{first_pkg.get('paket_adi', 'Bilinmiyor')} için derleme başlatıldı.", foreground="green")
+            else:
+                self.status_label.config(text=f"Paket listesi alınamadı: {response.text}", foreground="red")
+        except Exception as e:
+            self.status_label.config(text=f"Hata: {e}", foreground="red")
+        finally:
+            self.auto_button.config(state='normal')
+            self.select_button.config(state='normal')
     
     def on_select_clicked(self):
         """Paket seç butonuna tıklandığında"""
@@ -258,6 +305,8 @@ class MainWindow:
             self.root.destroy()
         except Exception as e:
             print("Kapanışta hata:", e)
+        finally:
+            sys.exit(0)
     
     def show(self):
         """Pencereyi göster"""
